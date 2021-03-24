@@ -136,6 +136,18 @@ schema = {
                             },
                         },
                     },
+                    "projects": {
+                        "description": "Project definition",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": ["name", "repositories-regex"],
+                            "properties": {
+                                "name": {"type": "string"},
+                                "aliases": {"type": "string"},
+                            },
+                        },
+                    },
                 },
             },
         }
@@ -160,6 +172,7 @@ tenants:
           updated_since: "2020-01-01"
           token: "123"
           base_url: https://github.com
+    projects: []
   - index: tenant1
     idents:
       - ident: john
@@ -189,6 +202,9 @@ tenants:
           login: fabien
           password: secure
           prefix: namespace/
+    projects:
+      - name: infra
+        repositories-regex: "^config|^infra$|^openstack*"
 """
 
 
@@ -235,3 +251,10 @@ def get_idents_config(config: dict, index_name: str) -> IdentsConfig:
         return list(map(ident_from_config, matches[0].get("idents", [])))
     else:
         return []
+
+def get_project_definition(config: dict, index_name: str):
+    projects = []
+    for tenant in config["tenants"]:
+        if index_name in tenant.get('index') and 'projects' in tenant.keys():
+            projects.extend(tenant['projects'])
+    return projects

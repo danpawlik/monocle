@@ -290,7 +290,7 @@ Monocle is able to index changes from multiple code review systems. A contributo
 might get different identities across code review systems. Thus Monocle provides
 a configuration section to define aliases for contributors.
 
-Let say a Monocle index is configured to fetch changes from github.com and review.opendev.org (Gerrit) and we would like that John's metrics are merged under the `John Doe` identity. 
+Let say a Monocle index is configured to fetch changes from github.com and review.opendev.org (Gerrit) and we would like that John's metrics are merged under the `John Doe` identity.
 
 ```YAML
 tenants:
@@ -417,6 +417,14 @@ To check that, you are able to run simple curl command:
 
 ```Shell
 curl --header "REMOTE_USER: Daniel" -XGET http://localhost:9876/api/0/whoami
+```
+
+## Using API
+
+Below there are describe few examples, how to use API in Monoble:
+
+```
+curl -XGET "http://localhost:9876/api/0/query/last_changes?index=zuul&repository=.*&gte=2020-12-24&from=0&size=100&state=OPEN&selfMerged=false&ec_same_date=true"
 ```
 
 ## Contributing

@@ -72,6 +72,7 @@ public_queries = (
     "new_contributors",
     "changes_by_file_map",
     "authors_by_file_map",
+    "project_definition",
 )
 
 
@@ -150,10 +151,16 @@ def generate_filter(es, index, repository_fullname, params, ensure_time_range=Tr
     change_ids = params.get("change_ids")
     target_branch = params.get("target_branch")
     files = params.get("files")
+    project_definition = params.get("project_definition")
+    config_project_definitions = params.get('config_project_definitions')
     if gte:
         created_at_range["created_at"]["gte"] = gte
     if lte:
         created_at_range["created_at"]["lte"] = lte
+    if project_definition and config_project_definitions:
+        for project in config_project_definitions:
+            if (project_definition == project.get('name') and project.get('repositories-regex')):
+                repository_fullname = project.get('repositories-regex')
     qfilter = [
         {"regexp": {"repository_fullname": {"value": repository_fullname}}},
         {"range": created_at_range},
@@ -1023,3 +1030,10 @@ def repos_summary(es, index, repository_fullname, params):
         )
         repos[name]["changes_merged"] = count_merged_changes(es, index, name, params)
     return {"summary": repos}
+
+def project_definition(es, index, repository_fullname, params):
+    body = {"query": generate_filter(es, index, repository_fullname, params)}
+    es_params = {"index": index}
+    es_params["body"] = body
+    res = run_query(es, index, body)
+    return res

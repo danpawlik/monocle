@@ -123,9 +123,11 @@ def whoami():
 
 @app.route("/api/0/query/<name>", methods=["GET"])
 def query(name):
+    monocle_config = yaml.safe_load(open(config_path))
     if not request.args.get("index"):
         abort(make_response(jsonify(errors=["No index provided"]), 404))
     index = request.args.get("index")
+    projects = config.get_project_definition(monocle_config, index)
     if not config.is_public_index(indexes_acl, index):
         user = session.get("username") or request.headers.get("Remote-User")
         if user:
@@ -135,7 +137,7 @@ def query(name):
             return "Unauthorized to access index %s" % index, 403
     repository_fullname = request.args.get("repository")
     try:
-        ret = do_query(index, repository_fullname, request.args, name)
+        ret = do_query(index, repository_fullname, request.args, name, projects)
     except Exception:
         app.logger.exception(
             "Unable to process query %s (params: %s)"
@@ -152,8 +154,14 @@ def query(name):
 
 
 @cache.memoize(timeout=CACHE_TIMEOUT)
-def do_query(index, repository_fullname, args, name):
+def do_query(index, repository_fullname, args, name, projects):
     params = utils.set_params(args)
+
+    if params['project_definition'] and not projects:
+        return("There are no project definion set in "
+              "config file: %s" % request.get("index"), 404)
+
+    params['config_project_definitions'] = projects
     db = ELmonocleDB(
         elastic_conn=os.getenv("ELASTIC_CONN", "localhost:9200"),
         index=index,
