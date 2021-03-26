@@ -121,12 +121,24 @@ def whoami():
     return jsonify(username)
 
 
+@app.route("/api/0/config_project_def", methods=["GET"])
+def get_cfg_project_definition():
+    index = _get_index(request)
+    monocle_config = yaml.safe_load(open(config_path))
+    projects = config.get_project_definition(monocle_config, index)
+    return jsonify(projects)
+
+
+def _get_index(request):
+    if not request.args.get("index"):
+        abort(make_response(jsonify(errors=["No index provided"]), 404))
+    return request.args.get("index")
+
+
 @app.route("/api/0/query/<name>", methods=["GET"])
 def query(name):
     monocle_config = yaml.safe_load(open(config_path))
-    if not request.args.get("index"):
-        abort(make_response(jsonify(errors=["No index provided"]), 404))
-    index = request.args.get("index")
+    index = _get_index(request)
     projects = config.get_project_definition(monocle_config, index)
     if not config.is_public_index(indexes_acl, index):
         user = session.get("username") or request.headers.get("Remote-User")

@@ -425,6 +425,7 @@ Below there are describe few examples, how to use API in Monoble:
 
 ```
 curl -XGET "http://localhost:9876/api/0/query/last_changes?index=zuul&repository=.*&gte=2020-12-24&from=0&size=100&state=OPEN&selfMerged=false&ec_same_date=true"
+curl -XGET "http://localhost:9876/api/0/config_project_def?index=openstack"
 ```
 
 ## Contributing

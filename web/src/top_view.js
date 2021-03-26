@@ -46,7 +46,7 @@ class TopView extends React.Component {
       element = <ErrorBox error={{ status: 0, data: 'Please create an index.' }}/>
     } else {
       element = <Container>
-        <h2>Available Indices</h2>
+        <h2>Available Indices Daniel</h2>
         <Row><Col><p></p></Col></Row>
         <Row>
           <Col>

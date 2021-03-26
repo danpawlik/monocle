@@ -83,9 +83,16 @@ function getLoggedUser () {
     })
 }
 
+function getConfigProjectDefinitions () {
+  /* Return json list that include project definitions from config file */
+  const url = baseurl + '/config_project_def?index=openstack'
+  return axios.get(url).then(response => response.data)
+}
+
 export {
   getQueryResults,
   getIndices,
   getLoggedUser,
-  baseurl
+  baseurl,
+  getConfigProjectDefinitions
 }

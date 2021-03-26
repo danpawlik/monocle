@@ -276,7 +276,8 @@ class BaseQueryComponent extends React.Component {
         repository: params.get('repository') || '.*',
         branch: params.get('branch'),
         gte: params.get('gte'),
-        changeIds: this.props.changeIds
+        changeIds: this.props.changeIds,
+        project_definition: params.get('project_definition')
       }
     } else {
       queryParams = {
@@ -291,7 +292,8 @@ class BaseQueryComponent extends React.Component {
         authors: this.state.forceAllAuthors ? null : params.get('authors'),
         graph_type: this.state.graph_type,
         from: start * this.state.pageSize,
-        size: this.state.pageSize
+        size: this.state.pageSize,
+        project_definition: params.get('project_definition')
       }
       if (['last_changes', 'repos_top', 'authors_top', 'approvals_top'].includes(this.state.name)) {
         // Merge both associative arrays

@@ -31,6 +31,8 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
 
+import { getConfigProjectDefinitions } from '../api'
+
 class DateFormBox extends React.Component {
   constructor (props) {
     super(props)
@@ -179,7 +181,8 @@ class FiltersForm extends React.Component {
       approvals: '',
       excludeApprovals: '',
       state: 'open',
-      selfApproved: false
+      selfApproved: false,
+      project_definition: ''
     }
   }
 
@@ -229,7 +232,8 @@ class FiltersForm extends React.Component {
       authors: params.get('authors') || '',
       approvals: params.get('approvals') || '',
       excludeApprovals: params.get('exclude_approvals') || '',
-      state: params.get('state') || ''
+      state: params.get('state') || '',
+      project_definition: params.get('project_definition') || ''
     })
   }
 
@@ -259,7 +263,8 @@ class FiltersForm extends React.Component {
       authors: this.state.authors,
       approvals: this.state.approvals,
       exclude_approvals: this.state.excludeApprovals,
-      state: this.state.state
+      state: this.state.state,
+      project_definition: this.state.project_definition
     })
     event.preventDefault()
   }
@@ -276,6 +281,7 @@ class FiltersForm extends React.Component {
       {params.get('approvals') && this.props.showChangeParams ? ', approvals ' + params.get('approvals') : ''}
       {params.get('exclude_approvals') && this.props.showChangeParams ? ', excluded approvals named ' + params.get('exclude_approvals') : ''}
       {params.get('state') && this.props.showChangeParams ? ', change state ' + params.get('state') : ''}
+      {params.get('project_definition') ? ', change project_definition ' + params.get('project_definition') : ''}
       {'.'}
     </b>
     return resume
@@ -285,171 +291,235 @@ class FiltersForm extends React.Component {
     const resumeStyle = {
       textAlign: 'center'
     }
+
+    function getProjectDropdownItems (p_names) {
+      console.log(`pnames: ${p_names}`)
+      return (
+            <Dropdown.Item
+              key='test'
+              value='test'
+              active='test'
+            > 'test'
+            </Dropdown.Item>
+
+      )
+    }
+
+    function ConfigProjectDefinitions () {
+      let p_names = []
+      const config_projects = getConfigProjectDefinitions().then(function(response) {
+          response.map(function(entry){
+            p_names.push(entry.name)
+            }
+          )
+          console.log(`Checking project names: ${p_names}`)
+          return p_names
+      })
+
+      return (
+        <Form.Group controlId='formProjectDefinitionInput'>
+          <DropDownButton
+            title={'Project definition: '}
+            size="sm"
+            variant="secondary"
+          >
+            {getProjectDropdownItems({p_names})}
+          </DropDownButton>
+        </Form.Group>
+      )
+    }
+
     return (
-      <React.Fragment>
-        <Row>
-          <Col>
-            <Card>
-              <Form onSubmit={this.handleSubmit}>
-                <Card.Header>
-                  <Row>
-                    <Col>
-                      <Card.Title>
-                        Filters
-                      </Card.Title>
-                    </Col>
-                    <Col>
-                      <Button
-                        className='float-right'
-                        onClick={() => this.setState({ open: !this.state.open })}
-                        aria-controls='example-collapse-text'
-                        aria-expanded={this.state.open}
-                        variant='outline-secondary'
-                        size='sm'
-                      >
-                        {this.state.open
-                          ? <svg className="bi bi-chevron-double-up" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M7.646 2.646a.5.5 0 01.708 0l6 6a.5.5 0 01-.708.708L8 3.707 2.354 9.354a.5.5 0 11-.708-.708l6-6z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M7.646 6.646a.5.5 0 01.708 0l6 6a.5.5 0 01-.708.708L8 7.707l-5.646 5.647a.5.5 0 01-.708-.708l6-6z" clipRule="evenodd" />
-                          </svg>
-                          : <svg className="bi bi-chevron-double-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M1.646 6.646a.5.5 0 01.708 0L8 12.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M1.646 2.646a.5.5 0 01.708 0L8 8.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z" clipRule="evenodd" />
-                          </svg>
-                        }
-                      </Button>
-                    </Col>
-                  </Row>
-                </Card.Header>
-                <Collapse in={this.state.open}>
-                  <Card.Body id="example-collapse-text">
+      <>
+        <React.Fragment>
+          <Row>
+            <Col>
+              <Card>
+                <Form onSubmit={this.handleSubmit}>
+                  <Card.Header>
                     <Row>
-                      <Col md={6}>
-                        <DateFormBox
-                          gte={this.state.gte}
-                          lte={this.state.lte}
-                          handleChange={this.handleChange}
-                        />
+                      <Col>
+                        <Card.Title>
+                        Filters
+                        </Card.Title>
                       </Col>
-                      <Col md={6}>
-                        <Row>
-                          <Col md={6}>
-                            <Form.Group controlId='formAuthorsInput'>
-                              <Form.Control
-                                type='text'
-                                value={this.state.authors}
-                                placeholder="Authors"
-                                onChange={v => this.handleChange('authors', v)}
-                              />
-                            </Form.Group>
-                            <Form.Group controlId='formExcludeAuthorsInput'>
-                              <Form.Control
-                                type='text'
-                                value={this.state.excludeAuthors}
-                                placeholder="Exclude Authors"
-                                onChange={v => this.handleChange('excludeAuthors', v)}
-                              />
-                            </Form.Group>
-                            {this.props.showChangeParams
-                              ? <Form.Group controlId='formApprovalsInput'>
-                                <Form.Control
-                                  type='text'
-                                  value={this.state.approvals}
-                                  placeholder="Approvals"
-                                  onChange={v => this.handleChange('approvals', v)}
-                                />
-                              </Form.Group> : null}
-                            {this.props.showChangeParams
-                              ? <Form.Group controlId='formExcludeApprovalsInput'>
-                                <Form.Control
-                                  type='text'
-                                  value={this.state.excludeApprovals}
-                                  placeholder="Exclude Approvals"
-                                  onChange={v => this.handleChange('excludeApprovals', v)}
-                                />
-                              </Form.Group> : null}
-                          </Col>
-                          <Col md={6}>
-                            <Form.Group controlId='formRepositoryInput'>
-                              <Form.Control
-                                type='text'
-                                value={this.state.repository}
-                                placeholder="Repositories regexp"
-                                onChange={v => this.handleChange('repository', v)}
-                              />
-                            </Form.Group>
-                            <Form.Group controlId='formBranchInput'>
-                              <Form.Control
-                                type='text'
-                                value={this.state.branch}
-                                placeholder="Branch regexp"
-                                onChange={v => this.handleChange('branch', v)}
-                              />
-                            </Form.Group>
-                            <Form.Group controlId='formFilesInput'>
-                              <Form.Control
-                                type='text'
-                                value={this.state.files}
-                                placeholder="Files regexp"
-                                onChange={v => this.handleChange('files', v)}
-                              />
-                            </Form.Group>
-                            {this.props.showChangeParams
-                              ? <Form.Group controlId='changeStateInput'>
-                                <DropDownButton
-                                  title={this.state.state ? 'Change state: ' + this.state.state : 'Change state: ALL'}
-                                  size="sm"
-                                  variant="secondary"
-                                >
-                                  {[
-                                    ['', 'All'],
-                                    ['OPEN', 'Open'],
-                                    ['CLOSED', 'Closed'],
-                                    ['MERGED', 'Merged'],
-                                    ['SELF-MERGED', 'Self-merged']
-                                  ].map(
-                                    (entry) => {
-                                      return <Dropdown.Item
-                                        key={entry[0]}
-                                        value={entry[0]}
-                                        active={entry[0] === this.state.state}
-                                        onClick={this.handleChangeState}
-                                      >
-                                        {entry[1]}
-                                      </Dropdown.Item>
-                                    }
-                                  )
-                                  }
-                                </DropDownButton></Form.Group> : null}
-                            <Form.Group controlId='formSubmit'>
-                              <Button
-                                className='float-right'
-                                variant='primary'
-                                type='submit'
-                                size='sm'
-                              >Apply</Button>
-                            </Form.Group>
-                          </Col>
-                        </Row>
+                      <Col>
+                        <Button
+                          className='float-right'
+                          onClick={() => this.setState({ open: !this.state.open })}
+                          aria-controls='example-collapse-text'
+                          aria-expanded={this.state.open}
+                          variant='outline-secondary'
+                          size='sm'
+                        >
+                          {this.state.open
+                            ? <svg className="bi bi-chevron-double-up" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fillRule="evenodd" d="M7.646 2.646a.5.5 0 01.708 0l6 6a.5.5 0 01-.708.708L8 3.707 2.354 9.354a.5.5 0 11-.708-.708l6-6z" clipRule="evenodd" />
+                              <path fillRule="evenodd" d="M7.646 6.646a.5.5 0 01.708 0l6 6a.5.5 0 01-.708.708L8 7.707l-5.646 5.647a.5.5 0 01-.708-.708l6-6z" clipRule="evenodd" />
+                            </svg>
+                            : <svg className="bi bi-chevron-double-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fillRule="evenodd" d="M1.646 6.646a.5.5 0 01.708 0L8 12.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z" clipRule="evenodd" />
+                              <path fillRule="evenodd" d="M1.646 2.646a.5.5 0 01.708 0L8 8.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z" clipRule="evenodd" />
+                            </svg>
+                          }
+                        </Button>
                       </Col>
                     </Row>
-                  </Card.Body>
-                </Collapse>
-              </Form>
-            </Card >
-          </Col>
-        </Row>
-        <Row><Col><p></p></Col></Row>
-        <Row>
-          <Col>
-            <p style={resumeStyle}>
-              <b>
-                {this.getFilterResume()}
-              </b>
-            </p>
-          </Col>
-        </Row>
-      </React.Fragment>
+                  </Card.Header>
+                  <Collapse in={this.state.open}>
+                    <Card.Body id="example-collapse-text">
+                      <Row>
+                        <Col md={6}>
+                          <DateFormBox
+                            gte={this.state.gte}
+                            lte={this.state.lte}
+                            handleChange={this.handleChange}
+                          />
+                        </Col>
+                        <Col md={6}>
+                          <Row>
+                            <Col md={6}>
+                              <Form.Group controlId='formAuthorsInput'>
+                                <Form.Control
+                                  type='text'
+                                  value={this.state.authors}
+                                  placeholder="Authors"
+                                  onChange={v => this.handleChange('authors', v)}
+                                />
+                              </Form.Group>
+                              <Form.Group controlId='formExcludeAuthorsInput'>
+                                <Form.Control
+                                  type='text'
+                                  value={this.state.excludeAuthors}
+                                  placeholder="Exclude Authors"
+                                  onChange={v => this.handleChange('excludeAuthors', v)}
+                                />
+                              </Form.Group>
+                              {this.props.showChangeParams
+                                ? <Form.Group controlId='formApprovalsInput'>
+                                  <Form.Control
+                                    type='text'
+                                    value={this.state.approvals}
+                                    placeholder="Approvals"
+                                    onChange={v => this.handleChange('approvals', v)}
+                                  />
+                                </Form.Group> : null}
+                              {this.props.showChangeParams
+                                ? <Form.Group controlId='formExcludeApprovalsInput'>
+                                  <Form.Control
+                                    type='text'
+                                    value={this.state.excludeApprovals}
+                                    placeholder="Exclude Approvals"
+                                    onChange={v => this.handleChange('excludeApprovals', v)}
+                                  />
+                                </Form.Group> : null}
+                            </Col>
+                            <Col md={6}>
+                              <Form.Group controlId='formRepositoryInput'>
+                                <Form.Control
+                                  type='text'
+                                  value={this.state.repository}
+                                  placeholder="Repositories regexp"
+                                  onChange={v => this.handleChange('repository', v)}
+                                />
+                              </Form.Group>
+                              <Form.Group controlId='formBranchInput'>
+                                <Form.Control
+                                  type='text'
+                                  value={this.state.branch}
+                                  placeholder="Branch regexp"
+                                  onChange={v => this.handleChange('branch', v)}
+                                />
+                              </Form.Group>
+                              <Form.Group controlId='formFilesInput'>
+                                <Form.Control
+                                  type='text'
+                                  value={this.state.files}
+                                  placeholder="Files regexp"
+                                  onChange={v => this.handleChange('files', v)}
+                                />
+                              </Form.Group>
+                              < ConfigProjectDefinitions />
+                              {/* daniel */}
+                              {/* daniel
+                            <Form.Group controlId='formProjectDefinitionInput'>
+                              <DropDownButton
+                                title={'Project definition: ' + this.state.selected}
+                                size="sm"
+                                variant="secondary"
+                              >
+                              getConfigProjectDefinitions().then(function(response) {
+                                  p_names = response.map(function(entry){
+                                    return  <Dropdown.Item
+                                    key={entry.name}
+                                    value={entry.name}
+                                    active={entry.name}
+                                    onClick={this.handleClick}
+                                  > {entry.name}
+                                    </Dropdown.Item>
+                                    }
+                                  )
+                            })
+                              </DropDownButton>
+                            </Form.Group>
+                            */}
+                              {this.props.showChangeParams
+                                ? <Form.Group controlId='changeStateInput'>
+                                  <DropDownButton
+                                    title={this.state.state ? 'Change state: ' + this.state.state : 'Change state: ALL'}
+                                    size="sm"
+                                    variant="secondary"
+                                  >
+                                    {[
+                                      ['', 'All'],
+                                      ['OPEN', 'Open'],
+                                      ['CLOSED', 'Closed'],
+                                      ['MERGED', 'Merged'],
+                                      ['SELF-MERGED', 'Self-merged']
+                                    ].map(
+                                      (entry) => {
+                                        return <Dropdown.Item
+                                          key={entry[0]}
+                                          value={entry[0]}
+                                          active={entry[0] === this.state.state}
+                                          onClick={this.handleChangeState}
+                                        >
+                                          {entry[1]}
+                                        </Dropdown.Item>
+                                      }
+                                    )
+                                    }
+                                  </DropDownButton></Form.Group> : null}
+                              <Form.Group controlId='formSubmit'>
+                                <Button
+                                  className='float-right'
+                                  variant='primary'
+                                  type='submit'
+                                  size='sm'
+                                >Apply</Button>
+                              </Form.Group>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Collapse>
+                </Form>
+              </Card >
+            </Col>
+          </Row>
+          <Row><Col><p></p></Col></Row>
+          <Row>
+            <Col>
+              <p style={resumeStyle}>
+                <b>
+                  {this.getFilterResume()}
+                </b>
+              </p>
+            </Col>
+          </Row>
+        </React.Fragment>
+      </>
     )
   }
 }
