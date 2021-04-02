@@ -310,7 +310,9 @@ class FiltersForm extends React.Component {
       textAlign: "center",
     };
 
-    /* daniel*/
+    /* daniel
+     * FIXME: handle empty list
+     * */
     let project_def =
       Array.isArray(this.state.project_defs) &&
       this.state.project_defs.length > 0
@@ -324,11 +326,15 @@ class FiltersForm extends React.Component {
               {entry.name}
             </Dropdown.Item>
           ))
-        : getConfigProjectDefinitions().then((response) => {
-            response.map((project) => {
-              this.setState({ project_defs: response });
-            });
-          });
+        : getConfigProjectDefinitions(this.props.location.pathname).then(
+            (response) => {
+              console.log(response);
+              const isData = "test";
+              response.map((project) => {
+                this.setState({ project_defs: response });
+              });
+            }
+          );
 
     return (
       <>

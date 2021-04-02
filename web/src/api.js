@@ -13,80 +13,79 @@
 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+import axios from "axios";
+import moment from "moment";
 
-import axios from 'axios'
-import moment from 'moment'
+const server =
+  window.API_URL !== "__API_URL__"
+    ? window.API_URL
+    : process.env.REACT_APP_API_URL || "http://localhost:9876";
+const baseurl = server + "/api/0";
 
-const server = window.API_URL !== '__API_URL__' ? window.API_URL : (process.env.REACT_APP_API_URL || 'http://localhost:9876')
-const baseurl = server + '/api/0'
+function getQueryResults(queryParams) {
+  const params = { ...queryParams };
+  const url = baseurl + "/query/" + params.name;
 
-console.log('BaseURL=' + baseurl)
-
-function getQueryResults (queryParams) {
-  const params = { ...queryParams }
-  const url = baseurl + '/query/' + params.name
-
-  params.ec_same_date = true
-  delete params.name
-  delete params.graph_type
+  params.ec_same_date = true;
+  delete params.name;
+  delete params.graph_type;
 
   if (!params.gte) {
-    params.gte = moment().subtract(3, 'months').format('YYYY-MM-DD')
+    params.gte = moment().subtract(3, "months").format("YYYY-MM-DD");
   }
 
   if (params.changeIds) {
-    params.change_ids = params.changeIds
-    delete params.changeIds
+    params.change_ids = params.changeIds;
+    delete params.changeIds;
   }
 
   if (params.excludeAuthors) {
-    params.exclude_authors = params.excludeAuthors
-    delete params.excludeAuthors
+    params.exclude_authors = params.excludeAuthors;
+    delete params.excludeAuthors;
   }
 
   if (params.selfMerged) {
-    params.self_merged = params.selfMerged
-    delete params.selfMerged
+    params.self_merged = params.selfMerged;
+    delete params.selfMerged;
   }
 
   if (params.branch) {
-    params.target_branch = params.branch
-    delete params.branch
+    params.target_branch = params.branch;
+    delete params.branch;
   }
 
   if (params.excludeApprovals) {
-    params.exclude_approvals = params.excludeApprovals
-    delete params.excludeApprovals
+    params.exclude_approvals = params.excludeApprovals;
+    delete params.excludeApprovals;
   }
 
-  return axios.get(
-    url, {
-      params: params,
-      withCredentials: true
-    })
-}
-
-function getIndices () {
-  const url = baseurl + '/indices'
   return axios.get(url, {
-    withCredentials: true
-  })
+    params: params,
+    withCredentials: true,
+  });
 }
 
-function getLoggedUser () {
-  const url = baseurl + '/whoami'
-
-  return axios.get(
-    url, {
-      params: {},
-      withCredentials: true
-    })
+function getIndices() {
+  const url = baseurl + "/indices";
+  return axios.get(url, {
+    withCredentials: true,
+  });
 }
 
-function getConfigProjectDefinitions () {
+function getLoggedUser() {
+  const url = baseurl + "/whoami";
+
+  return axios.get(url, {
+    params: {},
+    withCredentials: true,
+  });
+}
+
+function getConfigProjectDefinitions(pathname) {
   /* Return json list that include project definitions from config file */
-  const url = baseurl + '/config_project_def?index=openstack'
-  return axios.get(url).then(response => response.data)
+  const indexname = pathname.replace("/", "");
+  const url = baseurl + "/config_project_def?index=" + indexname;
+  return axios.get(url).then((response) => response.data);
 }
 
 export {
@@ -94,5 +93,5 @@ export {
   getIndices,
   getLoggedUser,
   baseurl,
-  getConfigProjectDefinitions
-}
+  getConfigProjectDefinitions,
+};
