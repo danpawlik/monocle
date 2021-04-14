@@ -20,11 +20,7 @@ import Col from 'react-bootstrap/Col'
 
 import PropTypes from 'prop-types'
 
-import {
-  addUrlField,
-  ErrorBox,
-  hasSmallWidth
-} from './common'
+import { addUrlField, ErrorBox, hasSmallWidth } from './common'
 
 import { Pie as BasePie } from 'react-chartjs-2'
 
@@ -36,8 +32,8 @@ class Pie extends React.Component {
   }
 
   prepareDataSet (obj) {
-    const labels = obj.items.map(x => x.key).slice(0, this.maxSize)
-    const data = obj.items.map(x => x.doc_count).slice(0, this.maxSize)
+    const labels = obj.items.map((x) => x.key).slice(0, this.maxSize)
+    const data = obj.items.map((x) => x.doc_count).slice(0, this.maxSize)
     const sum = data.reduce((a, b) => a + b, 0)
     if (sum < obj.total_hits) {
       labels.push(this.other_label)
@@ -45,23 +41,42 @@ class Pie extends React.Component {
     }
     let palette
     if (this.props.palette) {
-      palette = labels.map(l => this.props.palette[l])
+      palette = labels.map((l) => this.props.palette[l])
     } else {
-      palette = ['#247ba0', '#70c1b3', '#b2dbbf', '#f3ffbd', '#ff1654',
-        '#247ba0', '#70c1b3', '#b2dbbf', '#f3ffbd', '#ff1654', '#b2dbbf']
+      palette = [
+        '#247ba0',
+        '#70c1b3',
+        '#b2dbbf',
+        '#f3ffbd',
+        '#ff1654',
+        '#247ba0',
+        '#70c1b3',
+        '#b2dbbf',
+        '#f3ffbd',
+        '#ff1654',
+        '#b2dbbf'
+      ]
     }
     const pieData = {
       labels: labels,
-      datasets: [{
-        data: data,
-        backgroundColor: palette
-      }]
+      datasets: [
+        {
+          data: data,
+          backgroundColor: palette
+        }
+      ]
     }
     return pieData
   }
 
   handleClick (obj, elems) {
-    if (obj.props.field && obj.props.history && elems && elems.length > 0 && elems[0]._index < obj.props.data.items.length) {
+    if (
+      obj.props.field &&
+      obj.props.history &&
+      elems &&
+      elems.length > 0 &&
+      elems[0]._index < obj.props.data.items.length
+    ) {
       const key = obj.props.data.items[elems[0]._index].key
       obj.props.history.push(addUrlField(obj.props.field, key))
     }
@@ -92,52 +107,54 @@ class Pie extends React.Component {
 
   render () {
     const data = this.prepareDataSet(this.props.data)
+    const options = {
+      legend: {
+        display: false
+      }
+    }
     if (!data) {
-      return <ErrorBox
-        error="No data for Pie"
-      />
+      return <ErrorBox error="No data for Pie" />
     } else {
       return (
         <React.Fragment>
           <Row>
             <Col>
               <BasePie
-                getElementsAtEvent={elems => this.handleClick(this, elems)}
+                getElementsAtEvent={(elems) => this.handleClick(this, elems)}
                 // on small screen the legend takes the whole height so detect and adjust
-                height={(hasSmallWidth()) ? 300 : 200}
-                options={
-                  {
-                    legend: {
-                      display: false
-                    }
-                  }
-                }
-                data={data} />
+                height={hasSmallWidth() ? 300 : 200}
+                data={data}
+                options={options}
+              />
             </Col>
           </Row>
           <Row>
             <Col>
-              {
-                data.labels.map(
-                  (label, index) =>
-                    <Row key={index} >
-                      <Col sm={2}></Col>
-                      <Col>
-                        <span key={label} id={label} style={
-                          this.getLabelBoxStyle(
-                            data.datasets[0].backgroundColor,
-                            index)}>&nbsp;</span>
-                        <span>&nbsp;</span>
-                        <span
-                          style={this.getLabelStyle(label)}
-                          onClick={e => this.handleLegendClick(label)}
-                          id={label}>
-                          {label}
-                        </span>
-                      </Col>
-                    </Row>
-                )
-              }
+              {data.labels.map((label, index) => (
+                <Row key={index}>
+                  <Col sm={2}></Col>
+                  <Col>
+                    <span
+                      key={label}
+                      id={label}
+                      style={this.getLabelBoxStyle(
+                        data.datasets[0].backgroundColor,
+                        index
+                      )}
+                    >
+                      &nbsp;
+                    </span>
+                    <span>&nbsp;</span>
+                    <span
+                      style={this.getLabelStyle(label)}
+                      onClick={(e) => this.handleLegendClick(label)}
+                      id={label}
+                    >
+                      {label}
+                    </span>
+                  </Col>
+                </Row>
+              ))}
             </Col>
           </Row>
         </React.Fragment>

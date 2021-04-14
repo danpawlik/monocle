@@ -67,27 +67,32 @@ class AuthorsHisto extends React.Component {
 
     const metaData = Object.entries(eventNameMapping)
     const data = {
-      labels: histos.ChangeCreatedEvent.buckets.map(x => x.key_as_string),
+      labels: histos.ChangeCreatedEvent.buckets.map((x) => x.key_as_string),
       datasets: []
     }
-    metaData.forEach(desc => {
-      data.datasets.push(
-        {
-          label: desc[1].label,
-          data: histos[desc[0]].buckets.map(x => x.doc_count),
-          lineTension: 0.5,
-          pointBorderColor: desc[1].pointBorderColor,
-          pointBackgroundColor: desc[1].pointBackgroundColor,
-          backgroundColor: desc[1].backgroundColor,
-          borderColor: desc[1].borderColor
-        }
-      )
+    metaData.forEach((desc) => {
+      data.datasets.push({
+        label: desc[1].label,
+        data: histos[desc[0]].buckets.map((x) => x.doc_count),
+        lineTension: 0.5,
+        pointBorderColor: desc[1].pointBorderColor,
+        pointBackgroundColor: desc[1].pointBackgroundColor,
+        backgroundColor: desc[1].backgroundColor,
+        borderColor: desc[1].borderColor
+      })
     })
     return data
   }
 
   render () {
     const data = this.prepareDataSet(this.props.data)
+    const options = {
+      legend: {
+        labels: {
+          boxWidth: 30
+        }
+      }
+    }
     return (
       <Row>
         <Col>
@@ -96,9 +101,18 @@ class AuthorsHisto extends React.Component {
               <Row>
                 <Col md={3}>
                   <ListGroup>
-                    <ListGroup.Item>Change authors: {this.props.data.ChangeCreatedEvent.total_authors}</ListGroup.Item>
-                    <ListGroup.Item>Review authors: {this.props.data.ChangeReviewedEvent.total_authors}</ListGroup.Item>
-                    <ListGroup.Item>Comment authors: {this.props.data.ChangeCommentedEvent.total_authors}</ListGroup.Item>
+                    <ListGroup.Item>
+                      Change authors:{' '}
+                      {this.props.data.ChangeCreatedEvent.total_authors}
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      Review authors:{' '}
+                      {this.props.data.ChangeReviewedEvent.total_authors}
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      Comment authors:{' '}
+                      {this.props.data.ChangeCommentedEvent.total_authors}
+                    </ListGroup.Item>
                   </ListGroup>
                 </Col>
                 <Col md={9}>
@@ -107,15 +121,7 @@ class AuthorsHisto extends React.Component {
                     width={100}
                     // On small screen the legend takes the whole height so detect and adjust
                     height={hasSmallWidth() ? 90 : 30}
-                    options={
-                      {
-                        legend: {
-                          labels: {
-                            boxWidth: 30
-                          }
-                        }
-                      }
-                    }
+                    options={options}
                   />
                 </Col>
               </Row>
@@ -145,9 +151,7 @@ class AuthorsHistoStats extends BaseQueryComponent {
   render () {
     if (!this.props.authors_histo_stats_loading) {
       if (this.props.authors_histo_stats_error) {
-        return <ErrorBox
-          error={this.props.authors_histo_stats_error}
-        />
+        return <ErrorBox error={this.props.authors_histo_stats_error} />
       }
       const data = this.props.authors_histo_stats_result
       return (
@@ -158,9 +162,7 @@ class AuthorsHistoStats extends BaseQueryComponent {
                 <Card.Title>Active authors</Card.Title>
               </Card.Header>
               <Card.Body>
-                <AuthorsHisto
-                  data={data}
-                />
+                <AuthorsHisto data={data} />
               </Card.Body>
             </Card>
           </Col>
@@ -172,10 +174,11 @@ class AuthorsHistoStats extends BaseQueryComponent {
   }
 }
 
-const mapStateToProps = state => addMap({}, state.QueryReducer, 'authors_histo_stats')
+const mapStateToProps = (state) =>
+  addMap({}, state.QueryReducer, 'authors_histo_stats')
 
-const CAuthorsHistoStats = withRouter(connect(mapStateToProps, mapDispatchToProps)(AuthorsHistoStats))
+const CAuthorsHistoStats = withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(AuthorsHistoStats)
+)
 
-export {
-  CAuthorsHistoStats
-}
+export { CAuthorsHistoStats }

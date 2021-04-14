@@ -41,7 +41,7 @@ const TYPE_TO_COLOR = {
 
 class TimelineGraph extends React.Component {
   getTitle (event) {
-    return TYPE_TO_NAME[event.type] + ' by ' + event.author.muid
+    return TYPE_TO_NAME[event.type] + ' by ' + event.author
   }
 
   getDate (event) {

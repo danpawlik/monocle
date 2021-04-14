@@ -97,7 +97,7 @@ class DateFormBox extends React.Component {
     return (
       <React.Fragment>
         <Row>
-          <Col lg={6}>
+          <Col>
             <Form.Group controlId='formFromDate'>
               <DatePicker
                 selected={
@@ -123,11 +123,10 @@ class DateFormBox extends React.Component {
               />
             </Form.Group>
           </Col>
-          <Col lg={6}>
+          <Col>
             <Form.Group controlId='formToDate'>
               <DropDownButton
                 title={'Relative date: ' + this.state.selected}
-                size="sm"
                 variant="secondary"
               >
                 {[
@@ -307,7 +306,6 @@ class FiltersForm extends React.Component {
                         aria-controls='example-collapse-text'
                         aria-expanded={this.state.open}
                         variant='outline-secondary'
-                        size='sm'
                       >
                         {this.state.open
                           ? <svg className="bi bi-chevron-double-up" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -326,16 +324,16 @@ class FiltersForm extends React.Component {
                 <Collapse in={this.state.open}>
                   <Card.Body id="example-collapse-text">
                     <Row>
-                      <Col md={6}>
+                      <Col>
                         <DateFormBox
                           gte={this.state.gte}
                           lte={this.state.lte}
                           handleChange={this.handleChange}
                         />
                       </Col>
-                      <Col md={6}>
+                      <Col>
                         <Row>
-                          <Col md={6}>
+                          <Col>
                             <Form.Group controlId='formAuthorsInput'>
                               <Form.Control
                                 type='text'
@@ -373,7 +371,7 @@ class FiltersForm extends React.Component {
                               </Form.Group>
                               : null}
                           </Col>
-                          <Col md={6}>
+                          <Col>
                             <Form.Group controlId='formRepositoryInput'>
                               <Form.Control
                                 type='text'
@@ -402,7 +400,6 @@ class FiltersForm extends React.Component {
                               ? <Form.Group controlId='changeStateInput'>
                                 <DropDownButton
                                   title={this.state.state ? 'Change state: ' + this.state.state : 'Change state: ALL'}
-                                  size="sm"
                                   variant="secondary"
                                 >
                                   {[
@@ -428,10 +425,9 @@ class FiltersForm extends React.Component {
                               : null}
                             <Form.Group controlId='formSubmit'>
                               <Button
-                                className='float-right'
+                                className='float-right btn-lg'
                                 variant='primary'
                                 type='submit'
-                                size='sm'
                               >Apply</Button>
                             </Form.Group>
                           </Col>

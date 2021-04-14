@@ -32,7 +32,7 @@ class IndexMenu extends React.Component {
     const search = window.location.search
     document.title = this.props.match.params.index ? TITLE + '/' + this.props.match.params.index : TITLE
     return (
-      <Navbar.Collapse id="basic-navbar-nav">
+      <Navbar.Collapse id="navbar navbar-expand-lg fixed-top">
         <Nav className="mr-auto">
           <Link className="nav-link" to={'/' + this.props.match.params.index + search}>Main</Link>
           <Link className="nav-link" to={'/' + this.props.match.params.index + '/people' + search}>People</Link>
@@ -64,7 +64,7 @@ class TopMenu extends React.Component {
     document.title = TITLE
     return (
       <React.Fragment>
-        <Navbar bg="light" expand="lg" sticky="top" className="fixed-top">
+        <Navbar bg="light" sticky="top" className="navbar">
           <Navbar.Brand>
             <Link className="navbar-brand" to="/">{TITLE}</Link>
           </Navbar.Brand>

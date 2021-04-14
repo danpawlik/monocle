@@ -353,7 +353,7 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <TopMenu />
-        <Container>
+        <Container className="container-fluid">
           <Row><Col><p></p></Col></Row>
           <Row>
             <Col>
