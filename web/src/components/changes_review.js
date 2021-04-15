@@ -85,11 +85,7 @@ class ChangeReviewEventsHisto extends React.Component {
     const data = this.prepareDataSet(this.props.data)
 
     const options = {
-      legend: {
-        labels: {
-          boxWidth: 30
-        }
-      }
+      responsive: true
     }
     return (
       <Row>
@@ -134,8 +130,8 @@ class ChangesReviewStats extends BaseQueryComponent {
       return (
         <Row>
           <Col>
-            <Card>
-              <Card.Header>
+            <Card className="rounded border-0 border-top">
+              <Card.Header className="bg-white">
                 <Card.Title>Changes review stats</Card.Title>
               </Card.Header>
               <Card.Body>

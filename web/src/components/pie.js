@@ -108,6 +108,7 @@ class Pie extends React.Component {
   render () {
     const data = this.prepareDataSet(this.props.data)
     const options = {
+      responsive: true,
       legend: {
         display: false
       }

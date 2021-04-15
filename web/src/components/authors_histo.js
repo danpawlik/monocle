@@ -87,11 +87,7 @@ class AuthorsHisto extends React.Component {
   render () {
     const data = this.prepareDataSet(this.props.data)
     const options = {
-      legend: {
-        labels: {
-          boxWidth: 30
-        }
-      }
+      responsive: true
     }
     return (
       <Row>

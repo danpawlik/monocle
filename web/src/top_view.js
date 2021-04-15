@@ -45,17 +45,23 @@ class TopView extends React.Component {
     } else if (this.props.indices.length === 0) {
       element = <ErrorBox error={{ status: 0, data: 'Please create an index.' }}/>
     } else {
-      element = <Container>
-        <h2>Available Indices</h2>
-        <Row><Col><p></p></Col></Row>
+      element = (
+      <>
+        <section className="py-5 text-center container">
+          <div className="row py-lg-5 bg-white">
+            <h2>Available Indices in Monocle:</h2>
+            </div>
+          </section>
+      <Container>
         <Row>
           <Col>
-            <ListGroup>
+            <ListGroup variant="flush">
               {this.props.indices.map((elt, idx) => <ListGroup.Item key={idx}><Link to={'/' + elt}>{elt}</Link></ListGroup.Item>)}
             </ListGroup>
           </Col>
         </Row>
-      </Container>
+        </Container>
+        </>)
     }
     return element
   }

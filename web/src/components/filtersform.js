@@ -18,7 +18,6 @@ import React from 'react'
 
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -95,35 +94,10 @@ class DateFormBox extends React.Component {
   render () {
     return (
       <React.Fragment>
-        <Row>
-          {/* daniel
-              <DatePicker
-                selected={
-                  this.props.gte
-                    ? moment(this.props.gte).toDate()
-                    : ''}
-                onChange={v => this.props.handleChange('gte', v)}
-                dateFormat='yyyy-MM-dd'
-                placeholderText='From date'
-                showYearDropdown
-              />
-
-              <DatePicker
-                selected={
-                  this.props.lte
-                    ? moment(this.props.lte).toDate()
-                    : ''}
-                onChange={v => this.props.handleChange('lte', v)}
-                dateFormat='yyyy-MM-dd'
-                placeholderText='To date'
-                showYearDropdown
-            />
-
-          */}
           <Form.Group controlId='formFromDate'>
-                From date:
+            <Form.Label>From date:</Form.Label>
               <Form.Control
-                type='date'
+              type='date'
                   selected={
                   this.props.gte
                     ? moment(this.props.gte).toDate()
@@ -132,10 +106,8 @@ class DateFormBox extends React.Component {
                 dateFormat='yyyy-MM-dd'
                 />
               </Form.Group>
-            </Row>
-            <Row>
               <Form.Group controlId='formToDate'>
-                To date:
+                <Form.Label>To date:</Form.Label>
               <Form.Control
                 type='date'
                 selected={
@@ -146,8 +118,6 @@ class DateFormBox extends React.Component {
                 dateFormat='yyyy-MM-dd'
                 />
               </Form.Group>
-            </Row>
-            <Row>
             <Form.Group controlId='formToDate'>
               <DropDownButton
                 title={'Relative date: ' + this.state.selected}
@@ -176,7 +146,6 @@ class DateFormBox extends React.Component {
                 }
               </DropDownButton>
             </Form.Group>
-          </Row>
 
       </React.Fragment>
     )
@@ -312,28 +281,18 @@ class FiltersForm extends React.Component {
     }
     return (
       <React.Fragment>
-            <Card>
-              <Form onSubmit={this.handleSubmit}>
-                <Card.Header>
-                  <Row>
+        <Form onSubmit={this.handleSubmit}>
+            <h2>Filters:</h2>
+        <div className="pb-3 mb-4 border-bottom"></div>
                     <Col>
-                      <Card.Title>
-                        Filters
-                      </Card.Title>
-                    </Col>
-                  </Row>
-                </Card.Header>
-                <Card.Body>
-                {/* daniel */}
-                    <Col>
-                      <Row>
+                      <Row sm={1}>
                         <DateFormBox
                           gte={this.state.gte}
                           lte={this.state.lte}
                           handleChange={this.handleChange}
                         />
                       </Row>
-                      <Row>
+                      <Row sm={1}>
                             <Form.Group controlId='formAuthorsInput'>
                               <Form.Control
                                 type='text'
@@ -371,7 +330,7 @@ class FiltersForm extends React.Component {
                               </Form.Group>
                               : null}
                           </Row>
-                          <Row>
+                          <Row sm={1}>
                             <Form.Group controlId='formRepositoryInput'>
                               <Form.Control
                                 type='text'
@@ -396,6 +355,7 @@ class FiltersForm extends React.Component {
                                 onChange={v => this.handleChange('files', v)}
                               />
                             </Form.Group>
+                          </Row>
                             {this.props.showChangeParams
                               ? <Form.Group controlId='changeStateInput'>
                                 <DropDownButton
@@ -423,19 +383,30 @@ class FiltersForm extends React.Component {
                                   }
                                 </DropDownButton></Form.Group>
                               : null}
+                          <Row>
+                            <Col>
                             <Form.Group controlId='formSubmit'>
                               <Button
-                                className='float-right btn-lg'
+                                className='float-left btn-lg'
                                 variant='primary'
                                 type='submit'
-                              >Apply</Button>
+                            >Apply</Button>
+                          </Form.Group>
+                        </Col>
+                        <Col>
+
+                            <Form.Group controlId='formSubmitClear'>
+                              <Button
+                                className='float-right btn-lg'
+                                variant='danger'
+                                type='submit'
+                              >Clear</Button>
                             </Form.Group>
+                            </Col>
                       </Row>
                     </Col>
                 {/* daniel */}
-            </Card.Body>
               </Form>
-            </Card >
         <Row><Col><p></p></Col></Row>
         <Row>
           <Col>

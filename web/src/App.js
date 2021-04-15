@@ -59,15 +59,14 @@ class RootView extends React.Component {
   render () {
     return (
       <React.Fragment>
-        <Row><Col><p></p></Col></Row>
-        <Row><Col><p></p></Col></Row>
+        <Row><p></p></Row>
         <Row>
           <Col>
             <CChangesLifeCycleStats
               index={this.props.match.params.index} />
           </Col>
         </Row>
-        <Row><Col><p></p></Col></Row>
+        <div className="pb-3 mb-4 border-bottom"></div>
         <Row>
           <Col>
             <CChangesReviewStats
@@ -148,7 +147,7 @@ class ReposView extends React.Component {
   render () {
     return (
       <React.Fragment>
-        <Row><Col><p></p></Col></Row>
+        <Row><p></p></Row>
         <Row>
           <Col>
             <CRepoChanges
@@ -355,12 +354,12 @@ class App extends React.Component {
         <TopMenu />
         <Row>
         <Col sm={2}>
+          <Row><p></p></Row>
           <FiltersFormBox />
         </Col>
         {/* on full screen content? */}
         <Col sm={9}>
-          <Row>
-          </Row>
+          <Row></Row>
           <Switch>
             <Route exact path='/' component={TopView} />
             <Route exact path='/login' component={LoginView} />
