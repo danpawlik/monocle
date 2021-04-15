@@ -20,7 +20,6 @@ import { Switch, Route } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 
-import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import PropTypes from 'prop-types'
@@ -352,13 +351,15 @@ class App extends React.Component {
   render () {
     return (
       <React.Fragment>
+        <div className="container-fluid">
         <TopMenu />
-        <Container className="container-fluid">
-          <Row><Col><p></p></Col></Row>
+        <Row>
+        <Col sm={2}>
+          <FiltersFormBox />
+        </Col>
+        {/* on full screen content? */}
+        <Col sm={9}>
           <Row>
-            <Col>
-              <FiltersFormBox />
-            </Col>
           </Row>
           <Switch>
             <Route exact path='/' component={TopView} />
@@ -372,13 +373,16 @@ class App extends React.Component {
             <Route path='/:index/cold-changes' component={ColdChangesView} />
             <Route path='/:index/change/:change' component={ChangeView} />
           </Switch>
-          <Row><Col><p></p></Col></Row>
-          <Row><Col><p></p></Col></Row>
-          <Row><Col><p></p></Col></Row>
-          <Row><Col><p></p></Col></Row>
-          <Row><Col><p></p></Col></Row>
-        </Container>
-        <Footer />
+          <Row><p></p></Row>
+          <Row><p></p></Row>
+          <Row><p></p></Row>
+          <Row><p></p></Row>
+          <Row><p></p></Row>
+        </Col>
+      </Row>
+
+      <Footer />
+      </div>
       </React.Fragment>
     )
   }

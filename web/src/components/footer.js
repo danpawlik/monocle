@@ -21,7 +21,7 @@ class Footer extends React.Component {
     const date = new Date().getFullYear()
     // eslint-disable-next-line react/jsx-no-target-blank
     const a = <span className="text-muted"><a className="nav-link" href="https://github.com/change-metrics/monocle" target="_blank" rel="noopener">Powered by Monocle, {date}</a></span>
-    return <footer className="bd-footer p-3 bg-light text-right text-sm-start"><div className="container">{a}</div></footer>
+    return <footer className="footer fixed-bottom p-3 bg-light text-right text-sm-start">{a}</footer>
   }
 }
 

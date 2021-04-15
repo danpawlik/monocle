@@ -21,13 +21,12 @@ import Row from 'react-bootstrap/Row'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Collapse from 'react-bootstrap/Collapse'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropDownButton from 'react-bootstrap/DropdownButton'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 
-import DatePicker from 'react-datepicker'
+/* import DatePicker from 'react-datepicker'  */
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
 
@@ -97,8 +96,7 @@ class DateFormBox extends React.Component {
     return (
       <React.Fragment>
         <Row>
-          <Col>
-            <Form.Group controlId='formFromDate'>
+          {/* daniel
               <DatePicker
                 selected={
                   this.props.gte
@@ -109,8 +107,7 @@ class DateFormBox extends React.Component {
                 placeholderText='From date'
                 showYearDropdown
               />
-            </Form.Group>
-            <Form.Group controlId='formToDate'>
+
               <DatePicker
                 selected={
                   this.props.lte
@@ -120,10 +117,37 @@ class DateFormBox extends React.Component {
                 dateFormat='yyyy-MM-dd'
                 placeholderText='To date'
                 showYearDropdown
-              />
-            </Form.Group>
-          </Col>
-          <Col>
+            />
+
+          */}
+          <Form.Group controlId='formFromDate'>
+                From date:
+              <Form.Control
+                type='date'
+                  selected={
+                  this.props.gte
+                    ? moment(this.props.gte).toDate()
+                    : ''}
+                onChange={v => this.props.handleChange('gte', v)}
+                dateFormat='yyyy-MM-dd'
+                />
+              </Form.Group>
+            </Row>
+            <Row>
+              <Form.Group controlId='formToDate'>
+                To date:
+              <Form.Control
+                type='date'
+                selected={
+                  this.props.lte
+                    ? moment(this.props.lte).toDate()
+                    : ''}
+                onChange={v => this.props.handleChange('lte', v)}
+                dateFormat='yyyy-MM-dd'
+                />
+              </Form.Group>
+            </Row>
+            <Row>
             <Form.Group controlId='formToDate'>
               <DropDownButton
                 title={'Relative date: ' + this.state.selected}
@@ -152,8 +176,8 @@ class DateFormBox extends React.Component {
                 }
               </DropDownButton>
             </Form.Group>
-          </Col>
-        </Row>
+          </Row>
+
       </React.Fragment>
     )
   }
@@ -288,8 +312,6 @@ class FiltersForm extends React.Component {
     }
     return (
       <React.Fragment>
-        <Row>
-          <Col>
             <Card>
               <Form onSubmit={this.handleSubmit}>
                 <Card.Header>
@@ -299,41 +321,19 @@ class FiltersForm extends React.Component {
                         Filters
                       </Card.Title>
                     </Col>
-                    <Col>
-                      <Button
-                        className='float-right'
-                        onClick={() => this.setState({ open: !this.state.open })}
-                        aria-controls='example-collapse-text'
-                        aria-expanded={this.state.open}
-                        variant='outline-secondary'
-                      >
-                        {this.state.open
-                          ? <svg className="bi bi-chevron-double-up" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M7.646 2.646a.5.5 0 01.708 0l6 6a.5.5 0 01-.708.708L8 3.707 2.354 9.354a.5.5 0 11-.708-.708l6-6z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M7.646 6.646a.5.5 0 01.708 0l6 6a.5.5 0 01-.708.708L8 7.707l-5.646 5.647a.5.5 0 01-.708-.708l6-6z" clipRule="evenodd" />
-                          </svg>
-                          : <svg className="bi bi-chevron-double-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M1.646 6.646a.5.5 0 01.708 0L8 12.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M1.646 2.646a.5.5 0 01.708 0L8 8.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z" clipRule="evenodd" />
-                          </svg>
-                        }
-                      </Button>
-                    </Col>
                   </Row>
                 </Card.Header>
-                <Collapse in={this.state.open}>
-                  <Card.Body id="example-collapse-text">
-                    <Row>
-                      <Col>
+                <Card.Body>
+                {/* daniel */}
+                    <Col>
+                      <Row>
                         <DateFormBox
                           gte={this.state.gte}
                           lte={this.state.lte}
                           handleChange={this.handleChange}
                         />
-                      </Col>
-                      <Col>
-                        <Row>
-                          <Col>
+                      </Row>
+                      <Row>
                             <Form.Group controlId='formAuthorsInput'>
                               <Form.Control
                                 type='text'
@@ -370,8 +370,8 @@ class FiltersForm extends React.Component {
                                 />
                               </Form.Group>
                               : null}
-                          </Col>
-                          <Col>
+                          </Row>
+                          <Row>
                             <Form.Group controlId='formRepositoryInput'>
                               <Form.Control
                                 type='text'
@@ -430,16 +430,12 @@ class FiltersForm extends React.Component {
                                 type='submit'
                               >Apply</Button>
                             </Form.Group>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Collapse>
+                      </Row>
+                    </Col>
+                {/* daniel */}
+            </Card.Body>
               </Form>
             </Card >
-          </Col>
-        </Row>
         <Row><Col><p></p></Col></Row>
         <Row>
           <Col>

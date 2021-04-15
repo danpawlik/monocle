@@ -64,7 +64,7 @@ class TopMenu extends React.Component {
     document.title = TITLE
     return (
       <React.Fragment>
-        <Navbar bg="light" sticky="top" className="navbar">
+        <Navbar className="navbar bg-light">
           <Navbar.Brand>
             <Link className="navbar-brand" to="/">{TITLE}</Link>
           </Navbar.Brand>
