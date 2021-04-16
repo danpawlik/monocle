@@ -117,7 +117,6 @@ class ChangeLifeCycleEventsHisto extends React.Component {
     }
     return (
       <Row>
-        {/* <Col md={{ span: 8, offset: 2 }}> */}
         <Col>
           <Card>
             <Card.Body>

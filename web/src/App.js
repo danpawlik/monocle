@@ -351,15 +351,22 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <div className="container-fluid">
-        <TopMenu />
+          <TopMenu />
+        </div>
+
+        <Row></Row>
+
+        <div className="container-fluid">
+          <Col className="col-md-12">
+
         <Row>
-        <Col sm={2}>
+        <Col className="col-md-2">
+          <Row><p></p></Row>
           <Row><p></p></Row>
           <FiltersFormBox />
         </Col>
-        {/* on full screen content? */}
-        <Col sm={9}>
-          <Row></Row>
+
+        <Col className="col-md-8 border-left">
           <Switch>
             <Route exact path='/' component={TopView} />
             <Route exact path='/login' component={LoginView} />
@@ -378,9 +385,10 @@ class App extends React.Component {
           <Row><p></p></Row>
           <Row><p></p></Row>
         </Col>
-      </Row>
 
       <Footer />
+    </Row>
+    </Col>
       </div>
       </React.Fragment>
     )

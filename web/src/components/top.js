@@ -106,8 +106,8 @@ class MostActiveAuthorsStats extends BaseQueryComponent {
       return (
         <Row>
           <Col>
-            <Card>
-              <Card.Header>
+            <Card className="rounded border-0 border-top">
+              <Card.Header className="bg-white">
                 <Card.Title>Most active authors stats</Card.Title>
               </Card.Header>
               <Card.Body>
@@ -169,8 +169,8 @@ class MostReviewedAuthorsStats extends BaseQueryComponent {
       return (
         <Row>
           <Col>
-            <Card>
-              <Card.Header>
+            <Card className="rounded border-0 border-top">
+              <Card.Header className="bg-white">
                 <Card.Title>Most reviewed authors stats</Card.Title>
               </Card.Header>
               <Card.Body>
@@ -217,8 +217,8 @@ class NewContributorsStats extends BaseQueryComponent {
       return (
         <Row>
           <Col>
-            <Card>
-              <Card.Header>
+            <Card className="rounded border-0 border-top">
+              <Card.Header className="bg-white">
                 <Card.Title>New contributors stats</Card.Title>
               </Card.Header>
               <Card.Body>
@@ -246,8 +246,8 @@ class TopStrengthsTable extends React.Component {
     return (
       <Row>
         <Col>
-          <Card>
-            <Card.Header>
+          <Card className="rounded border-0 border-top">
+            <Card.Header className="bg-white">
               <Card.Title>{this.props.title}</Card.Title>
             </Card.Header>
             <Card.Body>

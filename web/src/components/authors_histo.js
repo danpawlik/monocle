@@ -92,8 +92,6 @@ class AuthorsHisto extends React.Component {
     return (
       <Row>
         <Col>
-          <Card>
-            <Card.Body>
               <Row>
                 <Col md={3}>
                   <ListGroup>
@@ -121,8 +119,6 @@ class AuthorsHisto extends React.Component {
                   />
                 </Col>
               </Row>
-            </Card.Body>
-          </Card>
         </Col>
       </Row>
     )
@@ -153,8 +149,8 @@ class AuthorsHistoStats extends BaseQueryComponent {
       return (
         <Row>
           <Col>
-            <Card>
-              <Card.Header>
+            <Card className="rounded border-0 border-top">
+              <Card.Header className="bg-white">
                 <Card.Title>Active authors</Card.Title>
               </Card.Header>
               <Card.Body>

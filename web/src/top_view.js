@@ -47,19 +47,17 @@ class TopView extends React.Component {
     } else {
       element = (
       <>
-        <section className="py-5 text-center container">
+        <section className="py-3 text-center container">
           <div className="row py-lg-5 bg-white">
             <h2>Available Indices in Monocle:</h2>
             </div>
           </section>
       <Container>
-        <Row>
-          <Col>
-            <ListGroup variant="flush">
-              {this.props.indices.map((elt, idx) => <ListGroup.Item key={idx}><Link to={'/' + elt}>{elt}</Link></ListGroup.Item>)}
-            </ListGroup>
-          </Col>
+        <Row className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          {this.props.indices.map((elt, idx) => <Col className="col-md-6 h-100 p-5 text-white bg-white rounded border" key={idx}><Link to={'/' + elt}><h3><div className="text-center">{elt}</div></h3></Link></Col>)}
         </Row>
+            <ListGroup variant="flush">
+            </ListGroup>
         </Container>
         </>)
     }

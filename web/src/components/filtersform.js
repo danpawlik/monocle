@@ -95,6 +95,7 @@ class DateFormBox extends React.Component {
     return (
       <React.Fragment>
           <Form.Group controlId='formFromDate'>
+        <Row>
             <Form.Label>From date:</Form.Label>
               <Form.Control
               type='date'
@@ -105,8 +106,10 @@ class DateFormBox extends React.Component {
                 onChange={v => this.props.handleChange('gte', v)}
                 dateFormat='yyyy-MM-dd'
                 />
+              </Row>
               </Form.Group>
               <Form.Group controlId='formToDate'>
+        <Row>
                 <Form.Label>To date:</Form.Label>
               <Form.Control
                 type='date'
@@ -117,8 +120,10 @@ class DateFormBox extends React.Component {
                 onChange={v => this.props.handleChange('lte', v)}
                 dateFormat='yyyy-MM-dd'
                 />
+              </Row>
               </Form.Group>
             <Form.Group controlId='formToDate'>
+        <Row>
               <DropDownButton
                 title={'Relative date: ' + this.state.selected}
                 variant="secondary"
@@ -145,6 +150,7 @@ class DateFormBox extends React.Component {
                 )
                 }
               </DropDownButton>
+              </Row>
             </Form.Group>
 
       </React.Fragment>
@@ -282,80 +288,89 @@ class FiltersForm extends React.Component {
     return (
       <React.Fragment>
         <Form onSubmit={this.handleSubmit}>
-            <h2>Filters:</h2>
-        <div className="pb-3 mb-4 border-bottom"></div>
+            <h4>Filters:</h4>
+        <div className="pb-2 mb-2 border-bottom"></div>
                     <Col>
-                      <Row sm={1}>
                         <DateFormBox
                           gte={this.state.gte}
                           lte={this.state.lte}
                           handleChange={this.handleChange}
                         />
-                      </Row>
-                      <Row sm={1}>
+
                             <Form.Group controlId='formAuthorsInput'>
+                      <Row>
                               <Form.Control
                                 type='text'
                                 value={this.state.authors}
                                 placeholder="Authors"
                                 onChange={v => this.handleChange('authors', v)}
                               />
-                            </Form.Group>
+                              </Row>
+                              </Form.Group>
                             <Form.Group controlId='formExcludeAuthorsInput'>
+                      <Row>
                               <Form.Control
                                 type='text'
                                 value={this.state.excludeAuthors}
                                 placeholder="Exclude Authors"
                                 onChange={v => this.handleChange('excludeAuthors', v)}
                               />
-                            </Form.Group>
+                              </Row>
+                              </Form.Group>
                             {this.props.showChangeParams
                               ? <Form.Group controlId='formApprovalsInput'>
+                      <Row>
                                 <Form.Control
                                   type='text'
                                   value={this.state.approvals}
                                   placeholder="Approvals"
                                   onChange={v => this.handleChange('approvals', v)}
                                 />
+                            </Row>
                               </Form.Group>
                               : null}
                             {this.props.showChangeParams
                               ? <Form.Group controlId='formExcludeApprovalsInput'>
+                      <Row>
                                 <Form.Control
                                   type='text'
                                   value={this.state.excludeApprovals}
                                   placeholder="Exclude Approvals"
                                   onChange={v => this.handleChange('excludeApprovals', v)}
                                 />
+                          </Row>
                               </Form.Group>
                               : null}
-                          </Row>
-                          <Row sm={1}>
                             <Form.Group controlId='formRepositoryInput'>
+                          <Row>
                               <Form.Control
                                 type='text'
                                 value={this.state.repository}
                                 placeholder="Repositories regexp"
                                 onChange={v => this.handleChange('repository', v)}
                               />
+                          </Row>
                             </Form.Group>
                             <Form.Group controlId='formBranchInput'>
+                          <Row>
                               <Form.Control
                                 type='text'
                                 value={this.state.branch}
                                 placeholder="Branch regexp"
                                 onChange={v => this.handleChange('branch', v)}
                               />
+                          </Row>
                             </Form.Group>
                             <Form.Group controlId='formFilesInput'>
+                          <Row>
                               <Form.Control
                                 type='text'
                                 value={this.state.files}
                                 placeholder="Files regexp"
                                 onChange={v => this.handleChange('files', v)}
                               />
-                            </Form.Group>
                           </Row>
+                            </Form.Group>
                             {this.props.showChangeParams
                               ? <Form.Group controlId='changeStateInput'>
                                 <DropDownButton
